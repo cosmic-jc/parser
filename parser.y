@@ -597,6 +597,7 @@ import (
 	value                 "VALUE"
 	variables             "VARIABLES"
 	view                  "VIEW"
+	mview                 "MVIEW"
 	visible               "VISIBLE"
 	warnings              "WARNINGS"
 	week                  "WEEK"
@@ -797,84 +798,87 @@ import (
 	ProcedureCall          "Procedure call with Identifier or identifier"
 
 %type	<statement>
-	AdminStmt              "Check table statement or show ddl statement"
-	AlterDatabaseStmt      "Alter database statement"
-	AlterTableStmt         "Alter table statement"
-	AlterUserStmt          "Alter user statement"
-	AlterInstanceStmt      "Alter instance statement"
-	AlterSequenceStmt      "Alter sequence statement"
-	AnalyzeTableStmt       "Analyze table statement"
-	BeginTransactionStmt   "BEGIN TRANSACTION statement"
-	BinlogStmt             "Binlog base64 statement"
-	BRIEStmt               "BACKUP or RESTORE statement"
-	CommitStmt             "COMMIT statement"
-	CreateTableStmt        "CREATE TABLE statement"
-	CreateViewStmt         "CREATE VIEW  statement"
-	CreateUserStmt         "CREATE User statement"
-	CreateRoleStmt         "CREATE Role statement"
-	CreateDatabaseStmt     "Create Database Statement"
-	CreateIndexStmt        "CREATE INDEX statement"
-	CreateBindingStmt      "CREATE BINDING  statement"
-	CreateSequenceStmt     "CREATE SEQUENCE statement"
-	CreateStatisticsStmt   "CREATE STATISTICS statement"
-	DoStmt                 "Do statement"
-	DropDatabaseStmt       "DROP DATABASE statement"
-	DropIndexStmt          "DROP INDEX statement"
-	DropStatisticsStmt     "DROP STATISTICS statement"
-	DropStatsStmt          "DROP STATS statement"
-	DropTableStmt          "DROP TABLE statement"
-	DropSequenceStmt       "DROP SEQUENCE statement"
-	DropUserStmt           "DROP USER"
-	DropRoleStmt           "DROP ROLE"
-	DropViewStmt           "DROP VIEW statement"
-	DropBindingStmt        "DROP BINDING  statement"
-	DeallocateStmt         "Deallocate prepared statement"
-	DeleteFromStmt         "DELETE FROM statement"
-	DeleteWithoutUsingStmt "Normal DELETE statement"
-	DeleteWithUsingStmt    "DELETE USING statement"
-	EmptyStmt              "empty statement"
-	ExecuteStmt            "Execute statement"
-	ExplainStmt            "EXPLAIN statement"
-	ExplainableStmt        "explainable statement"
-	FlushStmt              "Flush statement"
-	FlashbackTableStmt     "Flashback table statement"
-	GrantStmt              "Grant statement"
-	GrantRoleStmt          "Grant role statement"
-	InsertIntoStmt         "INSERT INTO statement"
-	CallStmt               "CALL statement"
-	IndexAdviseStmt        "INDEX ADVISE statement"
-	KillStmt               "Kill statement"
-	LoadDataStmt           "Load data statement"
-	LoadStatsStmt          "Load statistic statement"
-	LockTablesStmt         "Lock tables statement"
-	PreparedStmt           "PreparedStmt"
-	PurgeImportStmt        "PURGE IMPORT statement that removes a IMPORT task record"
-	SelectStmt             "SELECT statement"
-	RenameTableStmt        "rename table statement"
-	ReplaceIntoStmt        "REPLACE INTO statement"
-	RecoverTableStmt       "recover table statement"
-	RevokeStmt             "Revoke statement"
-	RevokeRoleStmt         "Revoke role statement"
-	RollbackStmt           "ROLLBACK statement"
-	SplitRegionStmt        "Split index region statement"
-	SetStmt                "Set variable statement"
-	ChangeStmt             "Change statement"
-	SetRoleStmt            "Set active role statement"
-	SetDefaultRoleStmt     "Set default statement for some user"
-	ShowStmt               "Show engines/databases/tables/user/columns/warnings/status statement"
-	Statement              "statement"
-	TraceStmt              "TRACE statement"
-	TraceableStmt          "traceable statement"
-	TruncateTableStmt      "TRUNCATE TABLE statement"
-	UnlockTablesStmt       "Unlock tables statement"
-	UpdateStmt             "UPDATE statement"
-	SetOprStmt             "Union/Except/Intersect select statement"
-	SetOprStmt1            "Union/Except/Intersect select statement1"
-	SetOprStmt2            "Union/Except/Intersect select statement2"
-	UseStmt                "USE statement"
-	ShutdownStmt           "SHUTDOWN statement"
-	CreateViewSelectOpt    "Select/Union/Except/Intersect statement in CREATE VIEW ... AS SELECT"
-	BindableStmt           "Statement that can be created binding on"
+	AdminStmt                       "Check table statement or show ddl statement"
+	AlterDatabaseStmt               "Alter database statement"
+	AlterTableStmt                  "Alter table statement"
+	AlterUserStmt                   "Alter user statement"
+	AlterInstanceStmt               "Alter instance statement"
+	AlterSequenceStmt               "Alter sequence statement"
+	AnalyzeTableStmt                "Analyze table statement"
+	BeginTransactionStmt            "BEGIN TRANSACTION statement"
+	BinlogStmt                      "Binlog base64 statement"
+	BRIEStmt                        "BACKUP or RESTORE statement"
+	CommitStmt                      "COMMIT statement"
+	CreateTableStmt                 "CREATE TABLE statement"
+	CreateViewStmt                  "CREATE VIEW  stetement"
+	CreateMaterializedViewStmt      "CREATE MVIEW statement"
+	CreateUserStmt                  "CREATE User statement"
+	CreateRoleStmt                  "CREATE Role statement"
+	CreateDatabaseStmt              "Create Database Statement"
+	CreateIndexStmt                 "CREATE INDEX statement"
+	CreateBindingStmt               "CREATE BINDING  statement"
+	CreateSequenceStmt              "CREATE SEQUENCE statement"
+	CreateStatisticsStmt            "CREATE STATISTICS statement"
+	DoStmt                          "Do statement"
+	DropDatabaseStmt                "DROP DATABASE statement"
+	DropIndexStmt                   "DROP INDEX statement"
+	DropStatsStmt                   "DROP STATS statement"
+	DropStatisticsStmt              "DROP STATISTICS statement"
+	DropTableStmt                   "DROP TABLE statement"
+	DropSequenceStmt                "DROP SEQUENCE statement"
+	DropUserStmt                    "DROP USER"
+	DropRoleStmt                    "DROP ROLE"
+	DropViewStmt                    "DROP VIEW statement"
+	DropMaterializedViewStmt        "DROP MVIEW statement"
+	DropBindingStmt                 "DROP BINDING  statement"
+	DeallocateStmt                  "Deallocate prepared statement"
+	DeleteFromStmt                  "DELETE FROM statement"
+	DeleteWithoutUsingStmt          "Normal DELETE statement"
+	DeleteWithUsingStmt             "DELETE USING statement"
+	EmptyStmt                       "empty statement"
+	ExecuteStmt                     "Execute statement"
+	ExplainStmt                     "EXPLAIN statement"
+	ExplainableStmt                 "explainable statement"
+	FlushStmt                       "Flush statement"
+	FlashbackTableStmt              "Flashback table statement"
+	GrantStmt                       "Grant statement"
+	GrantRoleStmt                   "Grant role statement"
+	InsertIntoStmt                  "INSERT INTO statement"
+	CallStmt                        "CALL statement"
+	IndexAdviseStmt                 "INDEX ADVISE stetement"
+	KillStmt                        "Kill statement"
+	LoadDataStmt                    "Load data statement"
+	LoadStatsStmt                   "Load statistic statement"
+	LockTablesStmt                  "Lock tables statement"
+	PreparedStmt                    "PreparedStmt"
+	PurgeImportStmt                 "PURGE IMPORT statement that removes a IMPORT task record"
+	SelectStmt                      "SELECT statement"
+	RenameTableStmt                 "rename table statement"
+	ReplaceIntoStmt                 "REPLACE INTO statement"
+	RecoverTableStmt                "recover table statement"
+	RevokeStmt                      "Revoke statement"
+	RevokeRoleStmt                  "Revoke role statement"
+	RollbackStmt                    "ROLLBACK statement"
+	SplitRegionStmt                 "Split index region statement"
+	SetStmt                         "Set variable statement"
+	ChangeStmt                      "Change statement"
+	SetRoleStmt                     "Set active role statement"
+	SetDefaultRoleStmt              "Set default statement for some user"
+	ShowStmt                        "Show engines/databases/tables/user/columns/warnings/status statement"
+	Statement                       "statement"
+	TraceStmt                       "TRACE statement"
+	TraceableStmt                   "traceable statement"
+	TruncateTableStmt               "TRUNCATE TABLE statement"
+	UnlockTablesStmt                "Unlock tables statement"
+	UpdateStmt                      "UPDATE statement"
+	SetOprStmt                      "Union/Except/Intersect select statement"
+	SetOprStmt1                     "Union/Except/Intersect select statement1"
+	SetOprStmt2                     "Union/Except/Intersect select statement2"
+	UseStmt                         "USE statement"
+	ShutdownStmt                    "SHUTDOWN statement"
+	CreateViewSelectOpt             "Select/Union/Except/Intersect statement in CREATE VIEW ... AS SELECT"
+	CreateMaterializedViewSelectOpt "Select/Union statement in CREATE MVIEW ... AS SELECT"
+	BindableStmt                    "Statement that can be created binding on"
 
 %type	<item>
 	AdminShowSlow                          "Admin Show Slow statement"
@@ -3837,6 +3841,13 @@ CreateViewSelectOpt:
 		$$ = $2
 	}
 
+CreateMaterializedViewSelectOpt:
+	SetOprStmt1
+|	'(' SetOprStmt1 ')'
+	{
+		$$ = $2
+	}
+
 LikeTableWithOrWithoutParen:
 	"LIKE" TableName
 	{
@@ -3868,6 +3879,41 @@ CreateViewStmt:
 			Algorithm: $3.(model.ViewAlgorithm),
 			Definer:   $4.(*auth.UserIdentity),
 			Security:  $5.(model.ViewSecurity),
+		}
+		if $8 != nil {
+			x.Cols = $8.([]model.CIStr)
+		}
+		if $11 != nil {
+			x.CheckOption = $11.(model.ViewCheckOption)
+			endOffset := parser.startOffset(&yyS[yypt])
+			selStmt.SetText(strings.TrimSpace(parser.src[startOffset:endOffset]))
+		} else {
+			x.CheckOption = model.CheckOptionCascaded
+		}
+		$$ = x
+	}
+
+/*******************************************************************
+ *
+ *  Create Materialized View Statement
+ *
+ *  Example:
+ *      CREATE MVIEW OR REPLACE ALGORITHM = MERGE DEFINER="root@localhost" SQL SECURITY = definer materialized_view_name (col1,col2)
+ *          as select Col1,Col2 from table WITH LOCAL CHECK OPTION
+ *******************************************************************/
+CreateMaterializedViewStmt:
+	"CREATE" OrReplace ViewAlgorithm ViewDefiner ViewSQLSecurity "MVIEW" ViewName ViewFieldList "AS" CreateMaterializedViewSelectOpt ViewCheckOption
+	{
+		startOffset := parser.startOffset(&yyS[yypt-1])
+		selStmt := $10.(ast.StmtNode)
+		selStmt.SetText(strings.TrimSpace(parser.src[startOffset:]))
+		x := &ast.CreateMaterializedViewStmt{
+			OrReplace:            $2.(bool),
+			MaterializedViewName: $7.(*ast.TableName),
+			Select:               selStmt,
+			Algorithm:            $3.(model.ViewAlgorithm),
+			Definer:              $4.(*auth.UserIdentity),
+			Security:             $5.(model.ViewSecurity),
 		}
 		if $8 != nil {
 			x.Cols = $8.([]model.CIStr)
@@ -4101,7 +4147,7 @@ DropIndexStmt:
 DropTableStmt:
 	"DROP" OptTemporary TableOrTables IfExists TableNameList RestrictOrCascadeOpt
 	{
-		$$ = &ast.DropTableStmt{IfExists: $4.(bool), Tables: $5.([]*ast.TableName), IsView: false, IsTemporary: $2.(bool)}
+		$$ = &ast.DropTableStmt{IfExists: $4.(bool), Tables: $5.([]*ast.TableName), IsView: false, IsMaterializedView: false, IsTemporary: $2.(bool)}
 	}
 
 OptTemporary:
@@ -4119,11 +4165,21 @@ OptTemporary:
 DropViewStmt:
 	"DROP" "VIEW" TableNameList RestrictOrCascadeOpt
 	{
-		$$ = &ast.DropTableStmt{Tables: $3.([]*ast.TableName), IsView: true}
+		$$ = &ast.DropTableStmt{Tables: $3.([]*ast.TableName), IsView: true, IsMaterializedView: false}
 	}
 |	"DROP" "VIEW" "IF" "EXISTS" TableNameList RestrictOrCascadeOpt
 	{
-		$$ = &ast.DropTableStmt{IfExists: true, Tables: $5.([]*ast.TableName), IsView: true}
+		$$ = &ast.DropTableStmt{IfExists: true, Tables: $5.([]*ast.TableName), IsView: true, IsMaterializedView: false}
+	}
+
+DropMaterializedViewStmt:
+	"DROP" "MVIEW" TableNameList RestrictOrCascadeOpt
+	{
+		$$ = &ast.DropTableStmt{Tables: $3.([]*ast.TableName), IsView: false, IsMaterializedView: true}
+	}
+|	"DROP" "MVIEW" "IF" "EXISTS" TableNameList RestrictOrCascadeOpt
+	{
+		$$ = &ast.DropTableStmt{IfExists: true, Tables: $5.([]*ast.TableName), IsView: false, IsMaterializedView: true}
 	}
 
 DropUserStmt:
@@ -5356,6 +5412,7 @@ UnReservedKeyword:
 |	"BINLOG"
 |	"FUNCTION"
 |	"VIEW"
+|	"MVIEW"
 |	"BINDING"
 |	"BINDINGS"
 |	"MODIFY"
@@ -9371,6 +9428,13 @@ ShowStmt:
 			Table: $4.(*ast.TableName),
 		}
 	}
+|	"SHOW" "CREATE" "MVIEW" TableName
+	{
+		$$ = &ast.ShowStmt{
+			Tp:    ast.ShowCreateMaterializedView,
+			Table: $4.(*ast.TableName),
+		}
+	}
 |	"SHOW" "CREATE" "DATABASE" IfNotExists DBName
 	{
 		$$ = &ast.ShowStmt{
@@ -9964,6 +10028,7 @@ Statement:
 |	CreateIndexStmt
 |	CreateTableStmt
 |	CreateViewStmt
+|	CreateMaterializedViewStmt
 |	CreateUserStmt
 |	CreateRoleStmt
 |	CreateBindingStmt
@@ -9975,6 +10040,7 @@ Statement:
 |	DropTableStmt
 |	DropSequenceStmt
 |	DropViewStmt
+|	DropMaterializedViewStmt
 |	DropUserStmt
 |	DropRoleStmt
 |	DropStatisticsStmt
@@ -11740,6 +11806,14 @@ PrivType:
 		$$ = mysql.CreateViewPriv
 	}
 |	"SHOW" "VIEW"
+	{
+		$$ = mysql.ShowViewPriv
+	}
+|	"CREATE" "MVIEW"
+	{
+		$$ = mysql.CreateViewPriv
+	}
+|	"SHOW" "MVIEW"
 	{
 		$$ = mysql.ShowViewPriv
 	}

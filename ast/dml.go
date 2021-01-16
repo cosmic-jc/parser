@@ -2247,6 +2247,7 @@ const (
 	ShowCollation
 	ShowCreateTable
 	ShowCreateView
+	ShowCreateMaterializedView
 	ShowCreateUser
 	ShowCreateSequence
 	ShowGrants
@@ -2369,6 +2370,11 @@ func (n *ShowStmt) Restore(ctx *format.RestoreCtx) error {
 		ctx.WriteKeyWord("CREATE VIEW ")
 		if err := n.Table.Restore(ctx); err != nil {
 			return errors.Annotate(err, "An error occurred while restore ShowStmt.VIEW")
+		}
+	case ShowCreateMaterializedView:
+		ctx.WriteKeyWord("CREATE MVIEW ")
+		if err := n.Table.Restore(ctx); err != nil {
+			return errors.Annotate(err, "An error occurred while restore ShowStmt.MVIEW")
 		}
 	case ShowCreateDatabase:
 		ctx.WriteKeyWord("CREATE DATABASE ")

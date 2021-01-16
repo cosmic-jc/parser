@@ -30,6 +30,7 @@ var (
 	_ DDLNode = &CreateIndexStmt{}
 	_ DDLNode = &CreateTableStmt{}
 	_ DDLNode = &CreateViewStmt{}
+	_ DDLNode = &CreateMaterializedViewStmt{}
 	_ DDLNode = &CreateSequenceStmt{}
 	_ DDLNode = &DropDatabaseStmt{}
 	_ DDLNode = &DropIndexStmt{}
@@ -1068,16 +1069,19 @@ func (n *CreateTableStmt) Accept(v Visitor) (Node, bool) {
 type DropTableStmt struct {
 	ddlNode
 
-	IfExists    bool
-	Tables      []*TableName
-	IsView      bool
-	IsTemporary bool // make sense ONLY if/when IsView == false
+	IfExists           bool
+	Tables             []*TableName
+	IsView             bool
+	IsMaterializedView bool
+	IsTemporary        bool // make sense ONLY if/when IsView == false
 }
 
 // Restore implements Node interface.
 func (n *DropTableStmt) Restore(ctx *format.RestoreCtx) error {
 	if n.IsView {
 		ctx.WriteKeyWord("DROP VIEW ")
+	} else if n.IsMaterializedView {
+		ctx.WriteKeyWord("DROP MVIEW ")
 	} else {
 		if n.IsTemporary {
 			ctx.WriteKeyWord("DROP TEMPORARY TABLE ")
@@ -1238,6 +1242,99 @@ func (n *TableToTable) Accept(v Visitor) (Node, bool) {
 		return n, false
 	}
 	n.NewTable = node.(*TableName)
+	return v.Leave(n)
+}
+
+// CreateMaterializedViewStmt is a statement to create a Materialized View.
+// materialized
+type CreateMaterializedViewStmt struct {
+	ddlNode
+
+	OrReplace            bool
+	MaterializedViewName *TableName
+	Cols                 []model.CIStr
+	Select               StmtNode
+	SchemaCols           []model.CIStr
+	Algorithm            model.ViewAlgorithm
+	Definer              *auth.UserIdentity
+	Security             model.ViewSecurity
+	CheckOption          model.ViewCheckOption
+}
+
+// Restore implements Node interface.
+func (n *CreateMaterializedViewStmt) Restore(ctx *format.RestoreCtx) error {
+	ctx.WriteKeyWord("CREATE ")
+	if n.OrReplace {
+		ctx.WriteKeyWord("OR REPLACE ")
+	}
+	ctx.WriteKeyWord("ALGORITHM")
+	ctx.WritePlain(" = ")
+	ctx.WriteKeyWord(n.Algorithm.String())
+	ctx.WriteKeyWord(" DEFINER")
+	ctx.WritePlain(" = ")
+
+	// todo Use n.Definer.Restore(ctx) to replace this part
+	if n.Definer.CurrentUser {
+		ctx.WriteKeyWord("current_user")
+	} else {
+		ctx.WriteName(n.Definer.Username)
+		if n.Definer.Hostname != "" {
+			ctx.WritePlain("@")
+			ctx.WriteName(n.Definer.Hostname)
+		}
+	}
+
+	ctx.WriteKeyWord(" SQL SECURITY ")
+	ctx.WriteKeyWord(n.Security.String())
+	ctx.WriteKeyWord(" MVIEW ")
+
+	if err := n.MaterializedViewName.Restore(ctx); err != nil {
+		return errors.Annotate(err, "An error occurred while create CreateMaterializedViewStmt.MaterializedViewName")
+	}
+
+	for i, col := range n.Cols {
+		if i == 0 {
+			ctx.WritePlain(" (")
+		} else {
+			ctx.WritePlain(",")
+		}
+		ctx.WriteName(col.O)
+		if i == len(n.Cols)-1 {
+			ctx.WritePlain(")")
+		}
+	}
+
+	ctx.WriteKeyWord(" AS ")
+
+	if err := n.Select.Restore(ctx); err != nil {
+		return errors.Annotate(err, "An error occurred while create CreateMaterializedViewStmt.Select")
+	}
+
+	if n.CheckOption != model.CheckOptionCascaded {
+		ctx.WriteKeyWord(" WITH ")
+		ctx.WriteKeyWord(n.CheckOption.String())
+		ctx.WriteKeyWord(" CHECK OPTION")
+	}
+	return nil
+}
+
+// Accept implements Node Accept interface.
+func (n *CreateMaterializedViewStmt) Accept(v Visitor) (Node, bool) {
+	newNode, skipChildren := v.Enter(n)
+	if skipChildren {
+		return v.Leave(newNode)
+	}
+	n = newNode.(*CreateMaterializedViewStmt)
+	node, ok := n.MaterializedViewName.Accept(v)
+	if !ok {
+		return n, false
+	}
+	n.MaterializedViewName = node.(*TableName)
+	selnode, ok := n.Select.Accept(v)
+	if !ok {
+		return n, false
+	}
+	n.Select = selnode.(StmtNode)
 	return v.Leave(n)
 }
 

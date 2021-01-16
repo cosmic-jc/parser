@@ -78,6 +78,8 @@ const (
 	ActionAlterCheckConstraint          ActionType = 45
 	ActionAlterTableAlterPartition      ActionType = 46
 	ActionRenameTables                  ActionType = 47
+	ActionCreateMaterializedView        ActionType = 48
+	ActionDropMaterializedView          ActionType = 49
 )
 
 const (
@@ -133,6 +135,8 @@ var actionMap = map[ActionType]string{
 	ActionDropCheckConstraint:           "drop check constraint",
 	ActionAlterCheckConstraint:          "alter check constraint",
 	ActionAlterTableAlterPartition:      "alter partition",
+	ActionCreateMaterializedView:        "create mview",
+	ActionDropMaterializedView:          "drop mview",
 }
 
 // String return current ddl action in string

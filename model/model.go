@@ -288,6 +288,8 @@ type TableInfo struct {
 
 	View *ViewInfo `json:"view"`
 
+	MaterializedView *MaterializedViewInfo `json:"materialized_view"`
+
 	Sequence *SequenceInfo `json:"sequence"`
 
 	// Lock represent the table lock info.
@@ -553,9 +555,13 @@ func (t *TableInfo) ColumnIsInIndex(c *ColumnInfo) bool {
 	return false
 }
 
-// IsView checks if TableInfo is a view.
+// IsView checks if TableInfo is a view or materializedView.
 func (t *TableInfo) IsView() bool {
 	return t.View != nil
+}
+
+func (t *TableInfo) IsMaterializedView() bool {
+	return t.MaterializedView != nil
 }
 
 // IsSequence checks if TableInfo is a sequence.
@@ -634,6 +640,15 @@ type ViewInfo struct {
 	SelectStmt  string             `json:"view_select"`
 	CheckOption ViewCheckOption    `json:"view_checkoption"`
 	Cols        []CIStr            `json:"view_cols"`
+}
+
+type MaterializedViewInfo struct {
+	Algorithm   ViewAlgorithm      `json:"materialized_view_algorithm"`
+	Definer     *auth.UserIdentity `json:"materialized_view_definer"`
+	Security    ViewSecurity       `json:"materialized_view_security"`
+	SelectStmt  string             `json:"materialized_view_select"`
+	CheckOption ViewCheckOption    `json:"materialized_view_checkoption"`
+	Cols        []CIStr            `json:"materialized_view_cols"`
 }
 
 const (

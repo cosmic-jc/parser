@@ -710,6 +710,7 @@ var tokenMap = map[string]int{
 	"VARIANCE":                 varPop,
 	"VARYING":                  varying,
 	"VIEW":                     view,
+	"MVIEW":                    mview,
 	"VIRTUAL":                  virtual,
 	"VISIBLE":                  visible,
 	"WARNINGS":                 warnings,
